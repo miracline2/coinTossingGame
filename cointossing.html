@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+flipTheCoin={computer:0,Human:0}
+scoreTable=[]
+function coinTossing(){
+    // noOfRounds=1
+r=0
+toss=0
+// console.log("Round",noOfRounds)
+a=setInterval(()=>{
+        coin=["head","tail"]
+        toss+= 1  
+                                                                                          
+        toss1=coin[Math.floor(Math.random()*coin.length)]
+        toss2=coin[Math.floor(Math.random()*coin.length)]
+        
+        if(toss1=="head") {
+            flipTheCoin.computer+=1
+        }if(toss2=="head"){
+            flipTheCoin.Human+=1
+        }
+        console.log('Toss', toss)
+        console.log("computer:",toss1,"\n",  "Human:",toss2,"\n")
+        scoreTable.push({"Round":round, "Computer":toss1, "Human":toss2})
+        r++
+        if(r==10){
+            clearInterval(a)
+             console.table(flipTheCoin)
+        
+        if(flipTheCoin.computer>flipTheCoin.Human){
+            console.log("computer win the game")
+        }else if(flipTheCoin.computer<flipTheCoin.Human){
+            console.log("Human win the game")
+        }else{
+            console.log("match Draw")
+        }
+        console.log("**************************Match end*********************************")
+       
+        toss++    
+    }
+    },1000);
+}
+round=0
+b=setInterval(function time(){
+    
+    if(round==4){
+        clearInterval(b)
+        console.table(scoreTable)
+        headOrTailInCsv()
+ 
+    }else{
+        console.log("Round:-" ,round+1)
+        coinTossing()
+        round++
+        return time
+
+    }
+}(),15000)
+
+function headOrTailInCsv(){
+cs=""
+for(i of scoreTable){
+    cs+=i.Round+","
+    cs+=i.Computer+","
+    cs+=i.Human+","
+    cs+="\r\n"
+}
+console.log(cs)
+let tempBlob = new Blob([cs],{type:"text\csv"})
+let tempURL = window.URL.createObjectURL(tempBlob)
+let activation=document.createElement("a")
+activation.href=tempURL
+activation.download="tossingcoin.csv"
+activation.click()
+window.URL.revokeObjectURL(tempURL)
+activation.remove()
+}
+  </script>
+</body>
+
+</html>
